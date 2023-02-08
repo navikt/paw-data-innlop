@@ -44,6 +44,8 @@ dependencies {
     implementation("org.apache.kafka:kafka-clients:3.3.2")
     implementation("org.apache.avro:avro:1.11.0")
     implementation("io.confluent:kafka-avro-serializer:7.2.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
 }
 
 tasks.withType<KotlinCompile> {
