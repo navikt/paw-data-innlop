@@ -1,0 +1,21 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: paw-data-innlop
+  namespace: paw
+  labels:
+    team: paw
+spec:
+  image: {{ image }}
+  replicas:
+    min: 1
+    max: 1
+  kafka:
+    pool: nav-dev
+  secureLogs:
+    enabled: true
+  env:
+    - name: KAFKA_CONSUMER_GROUP_ID
+      value: paw-demo-group-v1
+    - name: KAFKA_PRODUKT_TOPIC
+      value: paw.paw-data-innlop

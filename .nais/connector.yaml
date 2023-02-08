@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paw-connect-paw-data-innlop
+  namespace: paw
+  labels:
+    team: paw
+    destination: connect
+    enabled: "true"
+data:
+  data-demo.json: |-
+    {
+      "name": "paw-data-innlop",
+      "config": {
+        "connector.class": "com.wepay.kafka.connect.bigquery.BigQuerySinkConnector",
+        "autoCreateTables": "true",
+        "sanitizeTopics": "true",
+        "topics": "paw.paw-data-innlop",
+        "tasks.max": "1",
+        "project": "paw-dev-129d",
+        "defaultDataset": "dataprodukt",
+        "transforms": "dropPrefix",
+        "transforms.dropPrefix.type": "org.apache.kafka.connect.transforms.RegexRouter",
+        "transforms.dropPrefix.regex": "paw\\.(.*)",
+        "transforms.dropPrefix.replacement": "$1",
+        "allowBigQueryRequiredFieldRelaxation": "true",
+        "allowNewBigQueryFields": "true"
+      }
+    }

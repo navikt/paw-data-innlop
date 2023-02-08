@@ -1,0 +1,11 @@
+{
+  "namespace": "paw.kafka.connect.demo",
+  "name": "TestSkjema",
+  "type": "record",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string"
+    }
+  ]
+}

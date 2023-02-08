@@ -1,0 +1,26 @@
+apiVersion: "kafka.nais.io/v1"
+kind: "Topic"
+metadata:
+  name: paw-data-innlop
+  namespace: paw
+  labels:
+    team: paw
+spec:
+  pool: nav-dev
+  config:
+    cleanupPolicy: delete
+    minimumInSyncReplicas: 1
+    partitions: 1
+    replication: 3
+    retentionBytes: -1
+    retentionHours: 72
+  acl:
+    - team: paw
+      application: paw-kafka-connect
+      access: read
+    - team: paw
+      application: paw-data-innlop
+      access: readwrite
+    - application: maccyber
+      team: paw
+      access: readwrite
