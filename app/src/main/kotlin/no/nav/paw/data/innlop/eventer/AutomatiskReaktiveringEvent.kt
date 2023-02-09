@@ -1,4 +1,4 @@
-package no.nav.paw.data.innlop
+package no.nav.paw.data.innlop.eventer
 
 import java.time.LocalDateTime
 
