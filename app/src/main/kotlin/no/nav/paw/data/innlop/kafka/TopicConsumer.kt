@@ -8,7 +8,15 @@ import java.util.function.Consumer
 
 class TopicConsumer(val kafkaProperties: Properties, val topic: String) {
     fun consume(callback: (record: ConsumerRecord<String, String>) -> Unit) {
-        KafkaConsumer<String, String>(kafkaProperties).use { consumer ->
+        KafkaConsumer<String, String>(kafkaProperties)
+            .also { consumer ->
+                Runtime.getRuntime().addShutdownHook(
+                    Thread {
+                        consumer.close()
+                    }
+                )
+            }
+            .use { consumer ->
             {
                 consumer.subscribe(listOf(topic))
                 val consumerRecords = consumer.poll(Duration.ofMinutes(2))
