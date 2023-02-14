@@ -26,6 +26,7 @@ internal class AutomatiskReaktiveringTjeneste(
         val topic = System.getenv("AUTOMATISK_REAKTIVERING_TOPIC")
 
         TopicConsumer(kafkaProperties, topic).consume {
+            logger.info("Konsumerer AutomatiskReaktiveringEvent")
             val event = json.readValue<AutomatiskReaktiveringEvent>(it.value())
             consume(event)
         }
@@ -33,18 +34,23 @@ internal class AutomatiskReaktiveringTjeneste(
 
     internal fun consume(event: AutomatiskReaktiveringEvent) {
         if (event.type == "AutomatiskReaktivering") {
+            logger.info("Fant AutomatiskReaktivering")
+
             AutomatiskReaktivering.newBuilder().apply {
                 brukerId = event.brukerId
                 created = event.created.asTimestamp()
             }.build().also { data ->
+                logger.info("Publiserer AutomatiskReaktivering $data")
                 automatiskReaktiveringProducer.publiser(data)
             }
         } else if (event.type == "AutomatiskReaktiveringSvar") {
+            logger.info("Fant AutomatiskReaktiveringSvar")
             AutomatiskReaktiveringSvar.newBuilder().apply {
                 brukerId = event.brukerId
                 svar = event.svar
                 created = event.created.asTimestamp()
             }.build().also { data ->
+                logger.info("Publiserer AutomatiskReaktiveringSvar $data")
                 automatiskReaktiveringSvarProducer.publiser(data)
             }
         }
