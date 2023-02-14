@@ -18,13 +18,13 @@ class AutomatiskReaktiveringTjenesteTest {
         val reaktiveringProducerMock = mockk<TopicProducer<AutomatiskReaktivering>>()
         val svarProducerMock = mockk<TopicProducer<AutomatiskReaktiveringSvar>>()
 
-        every { reaktiveringProducerMock.publiser(any())} returns Unit
+        every { reaktiveringProducerMock.publiser(any()) } returns Unit
 
         val tjeneste = AutomatiskReaktiveringTjeneste(reaktiveringProducerMock, svarProducerMock)
 
         val createdDate = LocalDateTime.now()
 
-        tjeneste.consume(AutomatiskReaktiveringEvent("test", createdDate,"AutomatiskReaktivering"))
+        tjeneste.consume(AutomatiskReaktiveringEvent("test", createdDate, "AutomatiskReaktivering"))
 
         val avroData = AutomatiskReaktivering.newBuilder().apply {
             brukerId = "test"

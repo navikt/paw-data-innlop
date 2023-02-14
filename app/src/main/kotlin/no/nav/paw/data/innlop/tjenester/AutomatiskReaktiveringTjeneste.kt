@@ -13,8 +13,8 @@ import no.nav.paw.data.innlop.kafka.TopicProducer
 
 internal class AutomatiskReaktiveringTjeneste(
     private val automatiskReaktiveringProducer: TopicProducer<AutomatiskReaktivering>,
-    private val automatiskReaktiveringSvarProducer: TopicProducer<AutomatiskReaktiveringSvar>,
-    ) {
+    private val automatiskReaktiveringSvarProducer: TopicProducer<AutomatiskReaktiveringSvar>
+) {
     val json = jacksonObjectMapper().findAndRegisterModules()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 

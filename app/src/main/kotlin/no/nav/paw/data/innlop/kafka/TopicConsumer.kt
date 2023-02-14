@@ -17,19 +17,19 @@ class TopicConsumer(val kafkaProperties: Properties, val topic: String) {
                 )
             }
             .use { consumer ->
-            {
-                consumer.subscribe(listOf(topic))
-                val consumerRecords = consumer.poll(Duration.ofMinutes(2))
+                {
+                    consumer.subscribe(listOf(topic))
+                    val consumerRecords = consumer.poll(Duration.ofMinutes(2))
 
-                consumerRecords.forEach(
-                    Consumer { record: ConsumerRecord<String, String> ->
-                        try {
-                            callback(record)
-                        } catch (e: Exception) {
+                    consumerRecords.forEach(
+                        Consumer { record: ConsumerRecord<String, String> ->
+                            try {
+                                callback(record)
+                            } catch (e: Exception) {
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
-        }
     }
 }
