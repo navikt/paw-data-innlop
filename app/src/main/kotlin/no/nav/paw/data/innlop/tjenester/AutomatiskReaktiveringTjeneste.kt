@@ -10,6 +10,7 @@ import no.nav.paw.data.innlop.avro.asTimestamp
 import no.nav.paw.data.innlop.eventer.AutomatiskReaktiveringEvent
 import no.nav.paw.data.innlop.kafka.TopicConsumer
 import no.nav.paw.data.innlop.kafka.TopicProducer
+import no.nav.paw.data.innlop.utils.logger
 
 internal class AutomatiskReaktiveringTjeneste(
     private val automatiskReaktiveringProducer: TopicProducer<AutomatiskReaktivering>,
@@ -19,6 +20,7 @@ internal class AutomatiskReaktiveringTjeneste(
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     fun start() {
+        logger.info("Starter AutomatiskReaktiveringTjeneste")
         val kafkaProperties = KafkaPropertiesPreset.aivenDefaultConsumerProperties("consumerGroupId")
 
         val topic = System.getenv("AUTOMATISK_REAKTIVERING_TOPIC")
