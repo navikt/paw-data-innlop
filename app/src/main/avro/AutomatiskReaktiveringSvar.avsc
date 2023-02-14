@@ -1,0 +1,22 @@
+{
+  "namespace": "no.nav.paw.data.innlop",
+  "name": "AutomatiskReaktiveringSvar",
+  "type": "record",
+  "fields": [
+    {
+      "name": "brukerId",
+      "type": "string"
+    },
+    {
+      "name": "svar",
+      "type": "string"
+    },
+    {
+      "name": "created",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    }
+  ]
+}
