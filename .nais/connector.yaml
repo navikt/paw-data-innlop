@@ -15,7 +15,7 @@ data:
         "connector.class": "com.wepay.kafka.connect.bigquery.BigQuerySinkConnector",
         "autoCreateTables": "true",
         "sanitizeTopics": "true",
-        "topics": "paw.paw-data-innlop",
+        "topics": "paw.paw-data-innlop-v1",
         "tasks.max": "1",
         "project": "paw-dev-129d",
         "defaultDataset": "dataprodukt",
