@@ -4,6 +4,7 @@ plugins {
     application
     kotlin("jvm") version "1.7.20"
     id("com.github.davidmc24.gradle.plugin.avro") version "1.5.0"
+    id("org.jmailen.kotlinter") version "3.13.0"
 }
 
 repositories {
@@ -17,6 +18,9 @@ repositories {
 }
 
 tasks {
+    test {
+        useJUnit()
+    }
     named<Jar>("jar") {
         archiveBaseName.set("app")
 
@@ -46,6 +50,12 @@ dependencies {
     implementation("io.confluent:kafka-avro-serializer:7.2.2")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
+
+    testImplementation("org.testcontainers:testcontainers:1.17.6")
+    testImplementation("org.testcontainers:kafka:1.17.6")
+    testImplementation("org.testcontainers:junit-jupiter:1.17.6")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
 
 tasks.withType<KotlinCompile> {

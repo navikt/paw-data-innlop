@@ -11,7 +11,7 @@ import org.apache.kafka.common.errors.RecordTooLargeException
 import org.apache.kafka.common.errors.UnknownServerException
 import java.util.Properties
 
-internal class DataTopic<T : SpecificRecord>(
+internal class TopicProducer<T : SpecificRecord>(
     private val producer: KafkaProducer<String, T>,
     private val topic: String
 ) {
@@ -19,7 +19,7 @@ internal class DataTopic<T : SpecificRecord>(
 //        private val logger = KotlinLogging.logger {}
 
         fun <T : SpecificRecord> dataTopic(topic: String) =
-            DataTopic(createProducer<String, T>(AivenConfig.default.avroProducerConfig()), topic)
+            TopicProducer(createProducer<String, T>(AivenConfig.default.avroProducerConfig()), topic)
 
         private fun isFatalError(err: Exception) = when (err) {
             is InvalidConfigurationException,

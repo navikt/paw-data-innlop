@@ -1,4 +1,5 @@
 package no.nav.paw.data.innlop.avro
+
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
