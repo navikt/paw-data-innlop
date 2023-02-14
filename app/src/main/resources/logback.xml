@@ -1,10 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <if condition='isDefined("NAIS_CLUSTER_NAME")'>
-        <then>
-            <include resource="logback-nais.xml"/>
-        </then>
-        <else>
-            <include resource="logback-local.xml"/>
-        </else>
-    </if>
+    <include resource="no/nav/common/log/logback-default.xml"/>
 </configuration>
