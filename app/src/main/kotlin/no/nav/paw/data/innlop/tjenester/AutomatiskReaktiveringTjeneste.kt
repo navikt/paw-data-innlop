@@ -21,7 +21,7 @@ internal class AutomatiskReaktiveringTjeneste(
 
     fun start() {
         logger.info("Starter AutomatiskReaktiveringTjeneste")
-        val kafkaProperties = KafkaPropertiesPreset.aivenDefaultConsumerProperties("consumerGroupId")
+        val kafkaProperties = KafkaPropertiesPreset.aivenDefaultConsumerProperties("paw-data-innlop-group-v1")
 
         val topic = System.getenv("AUTOMATISK_REAKTIVERING_TOPIC")
 
