@@ -21,7 +21,9 @@ internal class AutomatiskReaktiveringTjeneste(
     fun start() {
         val kafkaProperties = KafkaPropertiesPreset.aivenDefaultConsumerProperties("consumerGroupId")
 
-        TopicConsumer(kafkaProperties, "topic").consume {
+        val topic = System.getenv("AUTOMATISK_REAKTIVERING_TOPIC")
+
+        TopicConsumer(kafkaProperties, topic).consume {
             val event = json.readValue<AutomatiskReaktiveringEvent>(it.value())
             consume(event)
         }

@@ -18,4 +18,7 @@ spec:
     - name: KAFKA_CONSUMER_GROUP_ID
       value: paw-demo-group-v1
     - name: KAFKA_PRODUKT_TOPIC
-      value: paw.paw-data-innlop
+      value: paw.paw-data-innlop-v1
+    - name: AUTOMATISK_REAKTIVERING_TOPIC
+      value: paw.arbeidssoker-reaktivering-v1
+

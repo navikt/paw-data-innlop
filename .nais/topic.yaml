@@ -1,7 +1,7 @@
 apiVersion: "kafka.nais.io/v1"
 kind: "Topic"
 metadata:
-  name: paw-data-innlop
+  name: paw-data-innlop-v1
   namespace: paw
   labels:
     team: paw
