@@ -7,6 +7,4 @@ fun main() {
     val topic = System.getenv("KAFKA_PRODUKT_TOPIC")
 
     AutomatiskReaktiveringTjeneste(TopicProducer.dataTopic(topic), TopicProducer.dataTopic(topic)).start()
-
-    Thread.sleep(Long.MAX_VALUE)
 }
