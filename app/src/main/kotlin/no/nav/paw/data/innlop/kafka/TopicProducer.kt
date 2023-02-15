@@ -1,5 +1,6 @@
 package no.nav.paw.data.innlop.kafka
 
+import no.nav.paw.data.innlop.utils.logger
 import org.apache.avro.specific.SpecificRecord
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
@@ -16,8 +17,6 @@ internal class TopicProducer<T : SpecificRecord>(
     private val topic: String
 ) {
     companion object {
-//        private val logger = KotlinLogging.logger {}
-
         fun <T : SpecificRecord> dataTopic(topic: String) =
             TopicProducer(createProducer<String, T>(AivenConfig.default.avroProducerConfig()), topic)
 
@@ -36,7 +35,7 @@ internal class TopicProducer<T : SpecificRecord>(
     fun publiser(innlop: T) {
         producer.send(ProducerRecord(topic, innlop)) { _, err ->
             if (err == null || !isFatalError(err)) return@send
-//            logger.error(err) { "Shutting down producer due to fatal error: ${err.message}" }
+            logger.error("Shutting down producer due to fatal error: ${err.message}")
             producer.flush()
             throw err
         }
