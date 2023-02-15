@@ -8,7 +8,7 @@ metadata:
     destination: connect
     enabled: "true"
 data:
-  data-demo.json: |-
+  data-innlop.json: |-
     {
       "name": {{topic}},
       "config": {
