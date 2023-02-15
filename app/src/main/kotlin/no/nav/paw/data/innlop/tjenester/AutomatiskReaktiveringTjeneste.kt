@@ -35,10 +35,12 @@ internal class AutomatiskReaktiveringTjeneste(
             logger.info("Konsumerer AutomatiskReaktiveringEvent")
 
             it.value()?.let { v ->
-                logger.info("ConsumerRecord har verdi - parser AutomatiskReaktiveringEvent: $v")
-                val event = json.readValue<AutomatiskReaktiveringEvent>(v)
-                logger.info("Event parset til json", event)
-                consume(event)
+                try {
+                    val event = json.readValue<AutomatiskReaktiveringEvent>(v)
+                    consume(event)
+                } catch (e: Exception) {
+                    logger.error("Feil ved konsumering av AutomatiskReaktiveringEvent: $e")
+                }
             }
         }
     }
@@ -48,8 +50,8 @@ internal class AutomatiskReaktiveringTjeneste(
             logger.info("Fant AutomatiskReaktivering")
 
             AutomatiskReaktivering.newBuilder().apply {
-                brukerId = event.brukerId
-                created = event.created.asTimestamp()
+                brukerId = event.bruker_id
+                created = event.created_at.asTimestamp()
             }.build().also { data ->
                 logger.info("Publiserer AutomatiskReaktivering $data")
                 automatiskReaktiveringProducer.publiser(data)
@@ -57,9 +59,9 @@ internal class AutomatiskReaktiveringTjeneste(
         } else if (event.type == "AutomatiskReaktiveringSvar") {
             logger.info("Fant AutomatiskReaktiveringSvar")
             AutomatiskReaktiveringSvar.newBuilder().apply {
-                brukerId = event.brukerId
+                brukerId = event.bruker_id
                 svar = event.svar
-                created = event.created.asTimestamp()
+                created = event.created_at.asTimestamp()
             }.build().also { data ->
                 logger.info("Publiserer AutomatiskReaktiveringSvar $data")
                 automatiskReaktiveringSvarProducer.publiser(data)
