@@ -32,11 +32,12 @@ internal class AutomatiskReaktiveringTjeneste(
 //        }
 
         TopicConsumer(kafkaProperties, topic).consume2 {
-            logger.info("Konsumerer AutomatiskReaktiveringEvent", it.value())
+            logger.info("Konsumerer AutomatiskReaktiveringEvent")
 
             it.value()?.let { v ->
-                logger.info("ConsumerRecord har verdi - parser AutomatiskReaktiveringEvent")
+                logger.info("ConsumerRecord har verdi - parser AutomatiskReaktiveringEvent: $v")
                 val event = json.readValue<AutomatiskReaktiveringEvent>(v)
+                logger.info("Event parset til json", event)
                 consume(event)
             }
         }
