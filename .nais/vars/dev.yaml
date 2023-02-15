@@ -1,0 +1,6 @@
+kafka:
+  pool: nav-dev
+data:
+  topic: data-innlop-v2
+gcp:
+  project: paw-dev-129d

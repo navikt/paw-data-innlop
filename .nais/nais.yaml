@@ -11,7 +11,7 @@ spec:
     min: 1
     max: 1
   kafka:
-    pool: nav-dev
+    pool: {{kafka}}
   secureLogs:
     enabled: true
   env:
@@ -20,5 +20,7 @@ spec:
     - name: KAFKA_PRODUKT_TOPIC
       value: paw.paw-data-innlop-v1
     - name: AUTOMATISK_REAKTIVERING_TOPIC
-      value: paw.arbeidssoker-reaktivering-v1
+      value: paw.data-innlop-reaktivering-v1
+    - name: AUTOMATISK_REAKTIVERING_SVAR_TOPIC
+      value: paw.data-innlop-reaktivering-svar-v1
 

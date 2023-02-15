@@ -1,10 +1,11 @@
 package no.nav.paw.data.innlop
 
-import no.nav.paw.data.innlop.kafka.TopicProducer
+import no.nav.paw.data.innlop.kafka.TopicProducer.Companion.dataTopic
 import no.nav.paw.data.innlop.tjenester.AutomatiskReaktiveringTjeneste
 
 fun main() {
-    val topic = System.getenv("KAFKA_PRODUKT_TOPIC")
+    val automatiskReaktiveringTopic = System.getenv("AUTOMATISK_REAKTIVERING_TOPIC")
+    val automatiskReaktiveringSvarTopic = System.getenv("AUTOMATISK_REAKTIVERING_SVAR_TOPIC")
 
-    AutomatiskReaktiveringTjeneste(TopicProducer.dataTopic(topic), TopicProducer.dataTopic(topic)).start()
+    AutomatiskReaktiveringTjeneste(dataTopic<AutomatiskReaktivering>(automatiskReaktiveringTopic), dataTopic<AutomatiskReaktiveringSvar>(automatiskReaktiveringSvarTopic)).start()
 }

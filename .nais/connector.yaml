@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: paw-connect-paw-data-innlop
+  name: paw-connect-{{topic}}
   namespace: paw
   labels:
     team: paw
@@ -10,14 +10,14 @@ metadata:
 data:
   data-demo.json: |-
     {
-      "name": "paw-data-innlop",
+      "name": {{topic}},
       "config": {
         "connector.class": "com.wepay.kafka.connect.bigquery.BigQuerySinkConnector",
         "autoCreateTables": "true",
         "sanitizeTopics": "true",
-        "topics": "paw.paw-data-innlop-v1",
+        "topics": "paw.{{topic}}",
         "tasks.max": "1",
-        "project": "paw-dev-129d",
+        "project": {{project}},
         "defaultDataset": "dataprodukt",
         "transforms": "dropPrefix",
         "transforms.dropPrefix.type": "org.apache.kafka.connect.transforms.RegexRouter",
