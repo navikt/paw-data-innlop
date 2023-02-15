@@ -20,10 +20,10 @@ internal class AutomatiskReaktiveringTjeneste(
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     fun start() {
-        logger.info("Starter AutomatiskReaktiveringTjeneste")
         val kafkaProperties = KafkaPropertiesPreset.aivenDefaultConsumerProperties("paw-data-innlop-group-v1")
 
         val topic = System.getenv("AUTOMATISK_REAKTIVERING_TOPIC")
+        logger.info("Starter AutomatiskReaktiveringTjeneste - topic=$topic")
 
         TopicConsumer(kafkaProperties, topic).consume {
             logger.info("Konsumerer AutomatiskReaktiveringEvent")
