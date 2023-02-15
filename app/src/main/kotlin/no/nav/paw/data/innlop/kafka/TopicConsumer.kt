@@ -14,7 +14,7 @@ class TopicConsumer(private val kafkaProperties: Properties, private val topic: 
                 Runtime.getRuntime().addShutdownHook(
                     Thread {
                         consumer.close()
-                    },
+                    }
                 )
             }
             .use { consumer ->
@@ -29,7 +29,7 @@ class TopicConsumer(private val kafkaProperties: Properties, private val topic: 
                             } catch (e: Exception) {
                                 logger.error("Feil ved konsumering av topic=$topic", e)
                             }
-                        },
+                        }
                     )
                 }
             }
