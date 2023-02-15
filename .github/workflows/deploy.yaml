@@ -54,3 +54,12 @@ jobs:
           RESOURCE: .nais/nais.yaml
           VARS: .nais/vars/dev.yaml
           PRINT_PAYLOAD: true
+
+  deploy-dev-kafka:
+    needs: [ build ]
+    uses: ./.github/workflows/deploy-topics.yaml
+    secrets: inherit
+    with:
+      cluster: dev-gcp
+      kafka: nav-dev
+      project: paw-dev-129d
