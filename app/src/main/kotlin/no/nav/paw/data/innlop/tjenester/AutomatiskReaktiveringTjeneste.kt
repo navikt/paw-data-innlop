@@ -25,10 +25,18 @@ internal class AutomatiskReaktiveringTjeneste(
         val topic = System.getenv("AUTOMATISK_REAKTIVERING_TOPIC")
         logger.info("Starter AutomatiskReaktiveringTjeneste - topic=$topic")
 
-        TopicConsumer(kafkaProperties, topic).consume {
+//        TopicConsumer(kafkaProperties, topic).consume {
+//            logger.info("Konsumerer AutomatiskReaktiveringEvent")
+//            val event = json.readValue<AutomatiskReaktiveringEvent>(it.value())
+//            consume(event)
+//        }
+
+        TopicConsumer(kafkaProperties, topic).consume2 {
             logger.info("Konsumerer AutomatiskReaktiveringEvent")
-            val event = json.readValue<AutomatiskReaktiveringEvent>(it.value())
-            consume(event)
+            it.value()?.let { v ->
+                val event = json.readValue<AutomatiskReaktiveringEvent>(v)
+                consume(event)
+            }
         }
     }
 
