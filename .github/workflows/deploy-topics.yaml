@@ -18,10 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        topic: [
-          data-innlop-reaktivering-v1,
-          data-innlop-reaktivering-svar-v1,
-        ]
+        topic: [data-innlop-reaktivering-v1, data-innlop-reaktivering-svar-v1]
     steps:
       - uses: actions/checkout@v3
       - uses: nais/deploy/actions/deploy@v1
