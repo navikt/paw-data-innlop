@@ -45,9 +45,10 @@ tasks {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("no.nav.common:kafka:2.2023.01.02_13.51-1c6adeb1653b")
-    implementation("org.apache.kafka:kafka-clients:3.3.2")
-    implementation("org.apache.avro:avro:1.11.0")
-    implementation("io.confluent:kafka-avro-serializer:7.2.2")
+    implementation("org.apache.kafka:kafka-streams:7.3.1-ccs")
+    implementation("org.apache.kafka:kafka-clients:7.3.1-ccs")
+    implementation("io.confluent:kafka-streams-avro-serde:7.2.0")
+    implementation("org.apache.avro:avro:1.11.1")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
     implementation("ch.qos.logback:logback-classic:1.4.5")
