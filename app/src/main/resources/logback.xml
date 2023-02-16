@@ -21,9 +21,10 @@
         <appender-ref ref="secureLog" />
     </logger>
 
-    <logger name="org.apache.kafka.streams" level="WARN"/>
+    <logger name="org.apache.kafka" level="WARN" />
+    <logger name="no.nav" level="INFO" />
 
     <root level="INFO">
-        <appender-ref ref="STDOUT_JSON"/>
+        <appender-ref ref="STDOUT_JSON" />
     </root>
 </configuration>
