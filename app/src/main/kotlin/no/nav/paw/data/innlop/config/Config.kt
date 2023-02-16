@@ -5,7 +5,7 @@ import no.nav.common.kafka.util.KafkaPropertiesPreset
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.StreamsConfig
 import org.apache.kafka.streams.errors.LogAndFailExceptionHandler
-import java.util.*
+import java.util.Properties
 
 data class Config(
     val kafka: Properties = KafkaPropertiesPreset

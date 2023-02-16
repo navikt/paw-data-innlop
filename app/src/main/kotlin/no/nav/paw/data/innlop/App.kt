@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.paw.data.innlop.config.Config
 import no.nav.paw.data.innlop.config.Topics
-import no.nav.paw.data.innlop.eventer.AutomatiskReaktiveringEvent
-import no.nav.paw.data.innlop.kafka.innlopStream
-import no.nav.paw.data.innlop.streams.automatiskReaktiveringDataStream
+import no.nav.paw.data.innlop.tjenester.automatiskreaktivering.AutomatiskReaktiveringEvent
+import no.nav.paw.data.innlop.tjenester.automatiskreaktivering.automatiskReaktiveringDataStream
 import no.nav.paw.data.innlop.utils.logger
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.StreamsBuilder

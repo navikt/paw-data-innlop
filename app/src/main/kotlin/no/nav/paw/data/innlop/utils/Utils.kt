@@ -1,4 +1,4 @@
-package no.nav.paw.data.innlop.avro
+package no.nav.paw.data.innlop.utils
 
 import java.time.Instant
 import java.time.LocalDateTime

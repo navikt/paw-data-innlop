@@ -1,4 +1,4 @@
-package no.nav.paw.data.innlop.kafka
+package no.nav.paw.data.innlop
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.paw.data.innlop.utils.logger

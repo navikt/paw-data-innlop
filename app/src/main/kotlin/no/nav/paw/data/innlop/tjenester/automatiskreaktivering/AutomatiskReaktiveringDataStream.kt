@@ -1,12 +1,11 @@
-package no.nav.paw.data.innlop.streams
+package no.nav.paw.data.innlop.tjenester.automatiskreaktivering
 
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 import no.nav.paw.data.innlop.AutomatiskReaktivering
 import no.nav.paw.data.innlop.AutomatiskReaktiveringSvar
-import no.nav.paw.data.innlop.avro.asTimestamp
 import no.nav.paw.data.innlop.config.Config
 import no.nav.paw.data.innlop.config.Topics
-import no.nav.paw.data.innlop.eventer.AutomatiskReaktiveringEvent
+import no.nav.paw.data.innlop.utils.asTimestamp
 import no.nav.paw.data.innlop.utils.logger
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.kstream.KStream

@@ -1,4 +1,4 @@
-package no.nav.paw.data.innlop.eventer
+package no.nav.paw.data.innlop.tjenester.automatiskreaktivering
 
 import java.time.LocalDateTime
 
