@@ -21,6 +21,8 @@
         <appender-ref ref="secureLog" />
     </logger>
 
+    <logger name="org.apache.kafka.streams" level="WARN"/>
+
     <root level="INFO">
         <appender-ref ref="STDOUT_JSON"/>
     </root>
