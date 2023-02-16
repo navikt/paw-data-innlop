@@ -10,4 +10,4 @@ inline fun <reified T> innlopStream(
     objectMapper: ObjectMapper
 ) = builder.stream<String, String>(innlopTopic)
     .mapValues { melding -> objectMapper.readValue(melding, T::class.java) }
-    .peek { _, melding -> logger.info("Consumed: $melding") }
+    .peek { _, _ -> logger.info("Konsumerte melding fra $innlopTopic") }

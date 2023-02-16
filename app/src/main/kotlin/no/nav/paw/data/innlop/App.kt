@@ -7,6 +7,7 @@ import no.nav.paw.data.innlop.config.Topics
 import no.nav.paw.data.innlop.eventer.AutomatiskReaktiveringEvent
 import no.nav.paw.data.innlop.kafka.innlopStream
 import no.nav.paw.data.innlop.streams.automatiskReaktiveringDataStream
+import no.nav.paw.data.innlop.utils.logger
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.StreamsBuilder
 
@@ -21,6 +22,7 @@ fun main() {
     automatiskReaktiveringDataStream(automatiskReaktiveringInnlop, config)
 
     val streams = KafkaStreams(builder.build(), config.kafka)
+    logger.info("Starter streams")
     streams.start()
 
     Runtime.getRuntime().addShutdownHook(Thread(streams::close))
