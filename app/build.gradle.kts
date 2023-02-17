@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val githubPassword: String by project
+
 plugins {
     application
     kotlin("jvm") version "1.7.20"
@@ -14,6 +16,13 @@ repositories {
     }
     maven {
         url = uri("https://jitpack.io")
+    }
+    maven {
+        url = uri("https://maven.pkg.github.com/navikt/*")
+        credentials {
+            username = "x-access-token"
+            password = githubPassword
+        }
     }
 }
 
@@ -53,7 +62,9 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
     implementation("ch.qos.logback:logback-classic:1.4.5")
     implementation("net.logstash.logback:logstash-logback-encoder:7.2")
+    implementation("no.nav.paw:pdl-client:0.1.0")
 
+    testImplementation("org.apache.kafka:kafka-streams-test-utils:7.3.1-ccs")
     testImplementation("org.testcontainers:testcontainers:1.17.6")
     testImplementation("org.testcontainers:kafka:1.17.6")
     testImplementation("org.testcontainers:junit-jupiter:1.17.6")
