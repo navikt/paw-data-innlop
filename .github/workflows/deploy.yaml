@@ -20,6 +20,8 @@ jobs:
           java-version: 17
 
       - uses: gradle/gradle-build-action@v2
+        env:
+          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
         with:
           arguments: build installDist jar
 
@@ -35,8 +37,6 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v4
-        env:
-          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
         with:
           context: .
           tags: ${{ env.IMAGE }}
