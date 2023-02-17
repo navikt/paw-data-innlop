@@ -35,14 +35,15 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v4
+        env:
+          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
         with:
           context: .
           tags: ${{ env.IMAGE }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          env:
-            ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
+
 
   deploy-dev:
     needs: [ build ]
