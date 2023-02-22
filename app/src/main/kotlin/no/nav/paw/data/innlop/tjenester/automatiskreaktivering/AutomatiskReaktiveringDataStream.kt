@@ -32,31 +32,14 @@ fun automatiskReaktiveringDataStream(
     val automatiskReaktiveringSvarSerde = SpecificAvroSerde<AutomatiskReaktiveringSvar>()
     automatiskReaktiveringSvarSerde.configure(config.schemaRegistry, false)
 
-    automatiskReaktiveringStream
-        .mapValues { _, melding ->
-            runBlocking {
-                val aktorId = hentAktorId(melding.bruker_id, getToken())
+    setupAutomatiskReaktivering(automatiskReaktiveringStream, automatiskReaktiveringSerde, Topics.utlopReaktivering, getToken)
+    setupAutomatiskReaktiveringSvar(automatiskReaktiveringSvarStream, automatiskReaktiveringSvarSerde)
+}
 
-                AutomatiskReaktivering.newBuilder().apply {
-                    brukerId = aktorId ?: melding.bruker_id
-                    created = melding.created_at.asTimestamp()
-                }.build()
-            }
-        }
-        .peek { _, _ ->
-            logger.info("Sending message to topic: ${Topics.utlopReaktivering}")
-        }
-        .to(
-            Topics.utlopReaktivering,
-            Produced.with(
-                Serdes.String(),
-                Serdes.serdeFrom(
-                    automatiskReaktiveringSerde.serializer(),
-                    automatiskReaktiveringSerde.deserializer()
-                )
-            )
-        )
-
+fun setupAutomatiskReaktiveringSvar(
+    automatiskReaktiveringSvarStream: KStream<String, AutomatiskReaktiveringEvent>,
+    automatiskReaktiveringSvarSerde: SpecificAvroSerde<AutomatiskReaktiveringSvar>
+) {
     automatiskReaktiveringSvarStream
         .mapValues { _, melding ->
             AutomatiskReaktiveringSvar.newBuilder().apply {
@@ -75,6 +58,38 @@ fun automatiskReaktiveringDataStream(
                 Serdes.serdeFrom(
                     automatiskReaktiveringSvarSerde.serializer(),
                     automatiskReaktiveringSvarSerde.deserializer()
+                )
+            )
+        )
+}
+
+fun setupAutomatiskReaktivering(
+    automatiskReaktiveringStream: KStream<String, AutomatiskReaktiveringEvent>,
+    automatiskReaktiveringSerde: SpecificAvroSerde<AutomatiskReaktivering>,
+    utlopsTopic: String,
+    getToken: () -> String
+) {
+    automatiskReaktiveringStream
+        .mapValues { _, melding ->
+            runBlocking {
+                val aktorId = hentAktorId(melding.bruker_id, getToken())
+
+                AutomatiskReaktivering.newBuilder().apply {
+                    brukerId = aktorId ?: melding.bruker_id
+                    created = melding.created_at.asTimestamp()
+                }.build()
+            }
+        }
+        .peek { _, _ ->
+            logger.info("Sending message to topic: ${Topics.utlopReaktivering}")
+        }
+        .to(
+            utlopsTopic,
+            Produced.with(
+                Serdes.String(),
+                Serdes.serdeFrom(
+                    automatiskReaktiveringSerde.serializer(),
+                    automatiskReaktiveringSerde.deserializer()
                 )
             )
         )
