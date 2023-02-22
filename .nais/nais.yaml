@@ -23,4 +23,9 @@ spec:
       value: paw.data-innlop-reaktivering-v1
     - name: DATA_REAKTIVERING_SVAR_TOPIC
       value: paw.data-innlop-reaktivering-svar-v1
+    - name: PDL_CLUSTER
+      value: {{pdlCluster}}
+    - name: PDL_URL
+      value: {{pdlUrl}}
+
 

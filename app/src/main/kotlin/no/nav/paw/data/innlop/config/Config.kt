@@ -20,5 +20,7 @@ data class Config(
         KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG to System.getenv("KAFKA_SCHEMA_REGISTRY"),
         KafkaAvroSerializerConfig.USER_INFO_CONFIG to "${System.getenv("KAFKA_SCHEMA_REGISTRY_USER")}:${System.getenv("KAFKA_SCHEMA_REGISTRY_PASSWORD")}",
         KafkaAvroSerializerConfig.BASIC_AUTH_CREDENTIALS_SOURCE to "USER_INFO"
-    )
+    ),
+    val pdlCluster: String = System.getenv("PDL_CLUSTER"),
+    val pdlUrl: String = System.getenv("PDL_URL")
 )

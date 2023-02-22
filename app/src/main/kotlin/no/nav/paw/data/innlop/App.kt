@@ -2,6 +2,7 @@ package no.nav.paw.data.innlop
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import no.nav.paw.data.innlop.auth.TokenExchange
 import no.nav.paw.data.innlop.config.Config
 import no.nav.paw.data.innlop.config.Topics
 import no.nav.paw.data.innlop.tjenester.automatiskreaktivering.AutomatiskReaktiveringEvent
@@ -16,9 +17,12 @@ fun main() {
     val objectMapper = jacksonObjectMapper().findAndRegisterModules()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
+    val tokenExchange = TokenExchange()
+
     val automatiskReaktiveringInnlop =
         innlopStream<AutomatiskReaktiveringEvent>(Topics.innlopReaktivering, builder, objectMapper)
-    automatiskReaktiveringDataStream(automatiskReaktiveringInnlop, config)
+
+    automatiskReaktiveringDataStream(automatiskReaktiveringInnlop, config) { tokenExchange.createMachineToMachineToken() }
 
     val streams = KafkaStreams(builder.build(), config.kafka)
     logger.info("Starter streams")

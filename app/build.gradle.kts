@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val githubPassword: String by project
+val ktorVersion = "2.2.3"
 
 plugins {
     application
@@ -53,16 +54,23 @@ tasks {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("no.nav.common:kafka:2.2023.01.02_13.51-1c6adeb1653b")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.apache.kafka:kafka-streams:7.3.1-ccs")
     implementation("org.apache.kafka:kafka-clients:7.3.1-ccs")
-    implementation("io.confluent:kafka-streams-avro-serde:7.2.0")
     implementation("org.apache.avro:avro:1.11.1")
+    implementation("io.confluent:kafka-streams-avro-serde:7.2.0")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
     implementation("ch.qos.logback:logback-classic:1.4.5")
     implementation("net.logstash.logback:logstash-logback-encoder:7.2")
-    implementation("no.nav.paw:pdl-client:0.1.0")
+    implementation("no.nav.common:kafka:2.2023.01.02_13.51-1c6adeb1653b")
+    implementation("no.nav.common:token-client:2.2023.01.02_13.51-1c6adeb1653b")
+    implementation("no.nav.paw:pdl-client:0.1.3")
+
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     testImplementation("org.apache.kafka:kafka-streams-test-utils:7.3.1-ccs")
     testImplementation("org.testcontainers:testcontainers:1.17.6")
@@ -71,6 +79,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     testImplementation("io.mockk:mockk:1.13.4")
+    testImplementation(kotlin("test"))
 }
 
 tasks.withType<KotlinCompile> {
