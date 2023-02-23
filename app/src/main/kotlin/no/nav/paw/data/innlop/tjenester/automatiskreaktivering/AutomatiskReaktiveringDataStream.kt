@@ -72,10 +72,11 @@ fun setupAutomatiskReaktivering(
     automatiskReaktiveringStream
         .mapValues { _, melding ->
             runBlocking {
-                val aktorId = hentAktorId(melding.bruker_id, getToken())
+//                val aktorId = hentAktorId(melding.bruker_id, getToken())
 
                 AutomatiskReaktivering.newBuilder().apply {
-                    brukerId = aktorId ?: melding.bruker_id
+//                    brukerId = aktorId ?: melding.bruker_id
+                    brukerId = melding.bruker_id
                     created = melding.created_at.asTimestamp()
                 }.build()
             }

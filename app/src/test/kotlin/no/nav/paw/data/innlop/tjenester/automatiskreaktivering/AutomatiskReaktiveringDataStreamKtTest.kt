@@ -63,7 +63,7 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
         props[StreamsConfig.APPLICATION_ID_CONFIG] = "test"
         props[StreamsConfig.BOOTSTRAP_SERVERS_CONFIG] = "dummy:1234"
         props[StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG] = StringSerde::class.java
-        props[StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG] = SpecificAvroSerde::class.java
+        props[StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG] = StringSerde::class.java
         props[AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG] = MOCK_SCHEMA_REGISTRY_URL
 
         testDriver = TopologyTestDriver(topology, props)
@@ -89,18 +89,15 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
 
     @Test
     fun automatiskReaktivering() {
-        assertEquals(42, 42)
+       val automatiskReaktivering = AutomatiskReaktivering.newBuilder().apply {
+            brukerId = "test"
+            created = LocalDateTime.parse("2023-02-22T13:14:00.527Z", DateTimeFormatter.ISO_DATE_TIME).asTimestamp()
+        }.build()
 
-        // TODO fiks deserialiserings feil
-//        val automatiskReaktivering = AutomatiskReaktivering.newBuilder().apply {
-//            brukerId = "test"
-//            created = LocalDateTime.parse("2023-02-22T13:14:00.527Z", DateTimeFormatter.ISO_DATE_TIME).asTimestamp()
-//        }.build()
-//
-//        inputTopic!!.pipeInput(
-//            "1",
-//            """{"bruker_id":"test","created_at":"2023-02-22T13:14:00.527Z","type":"AutomatiskReaktivering"}"""
-//        )
-//        assertEquals(automatiskReaktivering, outputTopic!!.readValue())
+        inputTopic!!.pipeInput(
+            "1",
+            """{"bruker_id":"test","created_at":"2023-02-22T13:14:00.527Z","type":"AutomatiskReaktivering"}"""
+        )
+        assertEquals(automatiskReaktivering, outputTopic!!.readValue())
     }
 }
