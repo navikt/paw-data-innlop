@@ -6,7 +6,6 @@ import no.nav.paw.data.innlop.AutomatiskReaktivering
 import no.nav.paw.data.innlop.AutomatiskReaktiveringSvar
 import no.nav.paw.data.innlop.config.Config
 import no.nav.paw.data.innlop.config.Topics
-import no.nav.paw.data.innlop.pdl.hentAktorId
 import no.nav.paw.data.innlop.utils.asTimestamp
 import no.nav.paw.data.innlop.utils.logger
 import org.apache.kafka.common.serialization.Serdes

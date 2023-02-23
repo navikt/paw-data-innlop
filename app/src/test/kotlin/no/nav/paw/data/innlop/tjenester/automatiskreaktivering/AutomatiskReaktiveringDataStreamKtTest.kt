@@ -3,7 +3,8 @@ package no.nav.paw.data.innlop.tjenester.automatiskreaktivering
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.confluent.kafka.schemaregistry.testutil.MockSchemaRegistry
-import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig
+import io.confluent.kafka.serializers.KafkaAvroSerializerConfig
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 import junit.framework.TestCase.assertEquals
 import no.nav.paw.data.innlop.AutomatiskReaktivering
@@ -11,13 +12,16 @@ import no.nav.paw.data.innlop.innlopStream
 import no.nav.paw.data.innlop.utils.asTimestamp
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.common.serialization.Serdes.StringSerde
-import org.apache.kafka.streams.*
+import org.apache.kafka.streams.StreamsBuilder
+import org.apache.kafka.streams.StreamsConfig
+import org.apache.kafka.streams.TestInputTopic
+import org.apache.kafka.streams.TestOutputTopic
+import org.apache.kafka.streams.TopologyTestDriver
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Properties
 import kotlin.collections.set
 
 internal class AutomatiskReaktiveringDataStreamKtTest {
@@ -31,12 +35,11 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
     private val AUTOMATISK_REAKTIVERING_TOPIC = "paw.arbeidssoker-reaktivering-v1"
     private val DATA_REAKTIVERING_TOPIC = "paw.data-innlop-reaktivering-v1"
     private val DATA_REAKTIVERING_SVAR_TOPIC = "paw.data-innlop-reaktivering-svar-v1"
+    private val objectMapper = jacksonObjectMapper().findAndRegisterModules()
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     @Before
     fun setup() {
-        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-
         val builder = StreamsBuilder()
 
         val innlopStream =
@@ -50,7 +53,7 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
         val stringSerde = Serdes.String()
         val avroAutomatiskReaktivering = SpecificAvroSerde<AutomatiskReaktivering>()
         val config = mapOf(
-            AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG to MOCK_SCHEMA_REGISTRY_URL
+            KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG to MOCK_SCHEMA_REGISTRY_URL
         )
         avroAutomatiskReaktivering.configure(config, false)
 
@@ -64,7 +67,7 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
         props[StreamsConfig.BOOTSTRAP_SERVERS_CONFIG] = "dummy:1234"
         props[StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG] = StringSerde::class.java
         props[StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG] = StringSerde::class.java
-        props[AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG] = MOCK_SCHEMA_REGISTRY_URL
+        props[KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG] = MOCK_SCHEMA_REGISTRY_URL
 
         testDriver = TopologyTestDriver(topology, props)
 
@@ -89,14 +92,15 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
 
     @Test
     fun automatiskReaktivering() {
-       val automatiskReaktivering = AutomatiskReaktivering.newBuilder().apply {
-            brukerId = "test"
-            created = LocalDateTime.parse("2023-02-22T13:14:00.527Z", DateTimeFormatter.ISO_DATE_TIME).asTimestamp()
+        val automatiskReaktiveringEvent = AutomatiskReaktiveringEvent("12345678910", LocalDateTime.now(), "AutomatiskReaktivering")
+        val automatiskReaktivering = AutomatiskReaktivering.newBuilder().apply {
+            brukerId = automatiskReaktiveringEvent.bruker_id
+            created = automatiskReaktiveringEvent.created_at.asTimestamp()
         }.build()
 
         inputTopic!!.pipeInput(
-            "1",
-            """{"bruker_id":"test","created_at":"2023-02-22T13:14:00.527Z","type":"AutomatiskReaktivering"}"""
+            "",
+            objectMapper.writeValueAsString(automatiskReaktiveringEvent)
         )
         assertEquals(automatiskReaktivering, outputTopic!!.readValue())
     }

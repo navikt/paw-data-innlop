@@ -65,12 +65,12 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:7.2")
     implementation("no.nav.common:kafka:2.2023.01.02_13.51-1c6adeb1653b")
     implementation("no.nav.common:token-client:2.2023.01.02_13.51-1c6adeb1653b")
-    implementation("no.nav.paw:pdl-client:0.1.3")
+    implementation("no.nav.paw:pdl-client:0.1.4")
 
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
 
     testImplementation("org.apache.kafka:kafka-streams-test-utils:7.3.1-ccs")
     testImplementation("org.testcontainers:testcontainers:1.17.6")
