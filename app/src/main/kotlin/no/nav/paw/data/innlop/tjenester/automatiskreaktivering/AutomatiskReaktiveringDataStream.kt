@@ -9,6 +9,7 @@ import no.nav.paw.data.innlop.config.Topics
 import no.nav.paw.data.innlop.utils.asTimestamp
 import no.nav.paw.data.innlop.utils.logger
 import no.nav.paw.pdl.PdlClient
+import no.nav.paw.pdl.PdlException
 import no.nav.paw.pdl.hentAktorId
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.kstream.KStream
@@ -72,15 +73,17 @@ fun setupAutomatiskReaktivering(
 ) {
     automatiskReaktiveringStream
         .mapValues { _, melding ->
-            runBlocking {
-                val aktorId = pdlClient.hentAktorId(melding.bruker_id)
-
-                AutomatiskReaktivering.newBuilder().apply {
-                    brukerId = aktorId ?: melding.bruker_id
-                    brukerId = melding.bruker_id
-                    created = melding.created_at.asTimestamp()
-                }.build()
+            var aktorId: String? = null
+            try {
+                aktorId = runBlocking { pdlClient.hentAktorId(melding.bruker_id) }
+            } catch (ex: PdlException) {
+                logger.warn("Kall til PDL feilet. Setter aktørId til 'null'")
             }
+
+            AutomatiskReaktivering.newBuilder().apply {
+                brukerId = aktorId
+                created = melding.created_at.asTimestamp()
+            }.build()
         }
         .peek { _, _ ->
             logger.info("Sending message to topic: ${Topics.utlopReaktivering}")

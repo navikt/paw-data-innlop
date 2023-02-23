@@ -45,6 +45,7 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
     private val DATA_REAKTIVERING_SVAR_TOPIC = "paw.data-innlop-reaktivering-svar-v1"
     private val objectMapper = jacksonObjectMapper().findAndRegisterModules()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+    private val aktorId = "2649500819544"
 
     @Before
     fun setup() {
@@ -56,7 +57,7 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
             )
         }
         val httpClient = HttpClient(mockEngine)
-        fun getAccessToken() = "2649500819544"
+        fun getAccessToken() = "mock-access-token"
         val pdlClient = PdlClient("http://mock.no", "OPP", httpClient) { getAccessToken() }
         val builder = StreamsBuilder()
 
@@ -112,7 +113,7 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
     fun automatiskReaktivering() {
         val automatiskReaktiveringEvent = AutomatiskReaktiveringEvent("12345678910", LocalDateTime.now(), "AutomatiskReaktivering")
         val automatiskReaktivering = AutomatiskReaktivering.newBuilder().apply {
-            brukerId = automatiskReaktiveringEvent.bruker_id
+            brukerId = aktorId
             created = automatiskReaktiveringEvent.created_at.asTimestamp()
         }.build()
 
