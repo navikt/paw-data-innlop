@@ -35,17 +35,20 @@ fun automatiskReaktiveringDataStream(
     automatiskReaktiveringSvarSerde.configure(config.schemaRegistry, false)
 
     setupAutomatiskReaktivering(automatiskReaktiveringStream, automatiskReaktiveringSerde, Topics.utlopReaktivering, pdlClient)
-    setupAutomatiskReaktiveringSvar(automatiskReaktiveringSvarStream, automatiskReaktiveringSvarSerde)
+    setupAutomatiskReaktiveringSvar(automatiskReaktiveringSvarStream, automatiskReaktiveringSvarSerde, Topics.utlopReaktiveringSvar, pdlClient)
 }
 
 fun setupAutomatiskReaktiveringSvar(
     automatiskReaktiveringSvarStream: KStream<String, AutomatiskReaktiveringEvent>,
-    automatiskReaktiveringSvarSerde: SpecificAvroSerde<AutomatiskReaktiveringSvar>
+    automatiskReaktiveringSvarSerde: SpecificAvroSerde<AutomatiskReaktiveringSvar>,
+    utlopsTopic: String,
+    pdlClient: PdlClient
 ) {
     automatiskReaktiveringSvarStream
         .mapValues { _, melding ->
+            val aktorId = runBlocking { hentAktorId(pdlClient, melding.bruker_id) }
             AutomatiskReaktiveringSvar.newBuilder().apply {
-                brukerId = melding.bruker_id
+                brukerId = aktorId
                 svar = melding.svar
                 created = melding.created_at.asTimestamp()
             }.build()
@@ -54,7 +57,7 @@ fun setupAutomatiskReaktiveringSvar(
             logger.info("Sending message to topic: ${Topics.utlopReaktiveringSvar}")
         }
         .to(
-            Topics.utlopReaktiveringSvar,
+            utlopsTopic,
             Produced.with(
                 Serdes.String(),
                 Serdes.serdeFrom(
@@ -73,13 +76,7 @@ fun setupAutomatiskReaktivering(
 ) {
     automatiskReaktiveringStream
         .mapValues { _, melding ->
-            var aktorId: String? = null
-            try {
-                aktorId = runBlocking { pdlClient.hentAktorId(melding.bruker_id) }
-            } catch (ex: PdlException) {
-                logger.warn("Kall til PDL feilet. Setter aktørId til 'null'")
-            }
-
+            val aktorId = runBlocking { hentAktorId(pdlClient, melding.bruker_id) }
             AutomatiskReaktivering.newBuilder().apply {
                 brukerId = aktorId
                 created = melding.created_at.asTimestamp()
@@ -98,4 +95,16 @@ fun setupAutomatiskReaktivering(
                 )
             )
         )
+}
+
+private suspend fun hentAktorId(pdlClient: PdlClient, fnr: String): String? {
+    var aktorId: String? = null
+
+    try {
+        aktorId = runBlocking { pdlClient.hentAktorId(fnr) }
+    } catch (ex: PdlException) {
+        logger.warn("Kall til PDL feilet. Setter aktørId til 'null'")
+    }
+
+    return aktorId
 }
