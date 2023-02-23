@@ -66,3 +66,26 @@ jobs:
       cluster: dev-gcp
       kafka: nav-dev
       project: paw-dev-129d
+
+
+  deploy-prod:
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/nais.yaml
+          VARS: .nais/vars/dev.yaml
+          PRINT_PAYLOAD: true
+
+  deploy-prod-kafka:
+    needs: [ build ]
+    uses: ./.github/workflows/deploy-topics.yaml
+    secrets: inherit
+    with:
+      cluster: prod-gcp
+      kafka: nav-prod
+      project: paw-prod-7151

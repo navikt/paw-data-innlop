@@ -18,7 +18,7 @@ data:
         "topics": "paw.{{topic}}",
         "tasks.max": "1",
         "project": "{{project}}",
-        "defaultDataset": "dataprodukt",
+        "defaultDataset": "paw_dataprodukter_kafka",
         "transforms": "dropPrefix",
         "transforms.dropPrefix.type": "org.apache.kafka.connect.transforms.RegexRouter",
         "transforms.dropPrefix.regex": "paw\\.(.*)",

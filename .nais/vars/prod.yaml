@@ -1,0 +1,8 @@
+kafka:
+  pool: nav-prod
+data:
+  topic: data-innlop-v1
+gcp:
+  project: paw-prod-7151
+pdlCluster: prod-fss
+pdlUrl: https://pdl-api.prod-fss-pub.nais.io

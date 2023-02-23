@@ -16,7 +16,7 @@ spec:
     enabled: true
   env:
     - name: KAFKA_CONSUMER_GROUP_ID
-      value: paw-data-innlop-group-v3
+      value: paw-data-innlop-group-v1
     - name: AUTOMATISK_REAKTIVERING_TOPIC
       value: paw.arbeidssoker-reaktivering-v1
     - name: DATA_REAKTIVERING_TOPIC
