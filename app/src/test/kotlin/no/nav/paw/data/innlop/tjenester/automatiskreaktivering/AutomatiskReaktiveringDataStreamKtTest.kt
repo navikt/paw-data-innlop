@@ -6,9 +6,17 @@ import io.confluent.kafka.schemaregistry.testutil.MockSchemaRegistry
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.respond
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.headersOf
 import junit.framework.TestCase.assertEquals
 import no.nav.paw.data.innlop.AutomatiskReaktivering
 import no.nav.paw.data.innlop.innlopStream
+import no.nav.paw.data.innlop.pdl.createPdlClient
 import no.nav.paw.data.innlop.utils.asTimestamp
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.common.serialization.Serdes.StringSerde
@@ -40,6 +48,16 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
 
     @Before
     fun setup() {
+        val mockEngine = MockEngine {
+            respond(
+                content = readResource("hentIdenter.json"),
+                status = HttpStatusCode.OK,
+                headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+            )
+        }
+        val httpClient = HttpClient(mockEngine)
+        fun getAccessToken() = "2649500819544"
+        val pdlClient = createPdlClient("http://mock.no", httpClient) { getAccessToken() }
         val builder = StreamsBuilder()
 
         val innlopStream =
@@ -57,7 +75,7 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
         )
         avroAutomatiskReaktivering.configure(config, false)
 
-        setupAutomatiskReaktivering(automatiskReaktiveringStream, avroAutomatiskReaktivering, DATA_REAKTIVERING_TOPIC) { "token" }
+        setupAutomatiskReaktivering(automatiskReaktiveringStream, avroAutomatiskReaktivering, DATA_REAKTIVERING_TOPIC, pdlClient)
 
         val topology = builder.build()
 
@@ -105,3 +123,6 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
         assertEquals(automatiskReaktivering, outputTopic!!.readValue())
     }
 }
+
+private fun readResource(filename: String) =
+    ClassLoader.getSystemResource(filename).readText()

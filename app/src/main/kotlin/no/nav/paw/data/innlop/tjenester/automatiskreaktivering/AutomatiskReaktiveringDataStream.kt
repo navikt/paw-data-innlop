@@ -8,6 +8,8 @@ import no.nav.paw.data.innlop.config.Config
 import no.nav.paw.data.innlop.config.Topics
 import no.nav.paw.data.innlop.utils.asTimestamp
 import no.nav.paw.data.innlop.utils.logger
+import no.nav.paw.pdl.PdlClient
+import no.nav.paw.pdl.hentAktorId
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.kstream.KStream
 import org.apache.kafka.streams.kstream.Produced
@@ -15,7 +17,7 @@ import org.apache.kafka.streams.kstream.Produced
 fun automatiskReaktiveringDataStream(
     stream: KStream<String, AutomatiskReaktiveringEvent>,
     config: Config,
-    getToken: () -> String
+    pdlClient: PdlClient
 ) {
     val automatiskReaktiveringStream = stream.filter { _, automatiskReaktiveringEvent ->
         automatiskReaktiveringEvent.type == "AutomatiskReaktivering"
@@ -31,7 +33,7 @@ fun automatiskReaktiveringDataStream(
     val automatiskReaktiveringSvarSerde = SpecificAvroSerde<AutomatiskReaktiveringSvar>()
     automatiskReaktiveringSvarSerde.configure(config.schemaRegistry, false)
 
-    setupAutomatiskReaktivering(automatiskReaktiveringStream, automatiskReaktiveringSerde, Topics.utlopReaktivering, getToken)
+    setupAutomatiskReaktivering(automatiskReaktiveringStream, automatiskReaktiveringSerde, Topics.utlopReaktivering, pdlClient)
     setupAutomatiskReaktiveringSvar(automatiskReaktiveringSvarStream, automatiskReaktiveringSvarSerde)
 }
 
@@ -66,15 +68,15 @@ fun setupAutomatiskReaktivering(
     automatiskReaktiveringStream: KStream<String, AutomatiskReaktiveringEvent>,
     automatiskReaktiveringSerde: SpecificAvroSerde<AutomatiskReaktivering>,
     utlopsTopic: String,
-    getToken: () -> String
+    pdlClient: PdlClient
 ) {
     automatiskReaktiveringStream
         .mapValues { _, melding ->
             runBlocking {
-//                val aktorId = hentAktorId(melding.bruker_id, getToken())
+                val aktorId = pdlClient.hentAktorId(melding.bruker_id)
 
                 AutomatiskReaktivering.newBuilder().apply {
-//                    brukerId = aktorId ?: melding.bruker_id
+                    brukerId = aktorId ?: melding.bruker_id
                     brukerId = melding.bruker_id
                     created = melding.created_at.asTimestamp()
                 }.build()
