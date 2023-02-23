@@ -4,7 +4,7 @@ import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
 import no.nav.paw.data.innlop.config.Config
 import no.nav.paw.data.innlop.utils.logger
 
-class TokenExchange {
+class TokenService {
     val config = Config()
     val namespace = "pdl"
     val appName = "pdl-api"

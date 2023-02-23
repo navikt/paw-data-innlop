@@ -16,8 +16,8 @@ import io.ktor.http.headersOf
 import junit.framework.TestCase.assertEquals
 import no.nav.paw.data.innlop.AutomatiskReaktivering
 import no.nav.paw.data.innlop.innlopStream
-import no.nav.paw.data.innlop.pdl.createPdlClient
 import no.nav.paw.data.innlop.utils.asTimestamp
+import no.nav.paw.pdl.PdlClient
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.common.serialization.Serdes.StringSerde
 import org.apache.kafka.streams.StreamsBuilder
@@ -57,7 +57,7 @@ internal class AutomatiskReaktiveringDataStreamKtTest {
         }
         val httpClient = HttpClient(mockEngine)
         fun getAccessToken() = "2649500819544"
-        val pdlClient = createPdlClient("http://mock.no", httpClient) { getAccessToken() }
+        val pdlClient = PdlClient("http://mock.no", "OPP", httpClient) { getAccessToken() }
         val builder = StreamsBuilder()
 
         val innlopStream =

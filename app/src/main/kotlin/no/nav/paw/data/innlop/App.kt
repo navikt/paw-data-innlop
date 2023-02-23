@@ -6,13 +6,13 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.jackson.jackson
-import no.nav.paw.data.innlop.auth.TokenExchange
+import no.nav.paw.data.innlop.auth.TokenService
 import no.nav.paw.data.innlop.config.Config
 import no.nav.paw.data.innlop.config.Topics
-import no.nav.paw.data.innlop.pdl.createPdlClient
 import no.nav.paw.data.innlop.tjenester.automatiskreaktivering.AutomatiskReaktiveringEvent
 import no.nav.paw.data.innlop.tjenester.automatiskreaktivering.automatiskReaktiveringDataStream
 import no.nav.paw.data.innlop.utils.logger
+import no.nav.paw.pdl.PdlClient
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.StreamsBuilder
 
@@ -26,8 +26,8 @@ fun main() {
             jackson()
         }
     }
-    val tokenExchange = TokenExchange()
-    val pdlClient = createPdlClient(config.pdlUrl, httpClient) { tokenExchange.createMachineToMachineToken() }
+    val tokenService = TokenService()
+    val pdlClient = PdlClient(config.pdlUrl, "OPP", httpClient) { tokenService.createMachineToMachineToken() }
 
     val automatiskReaktiveringInnlop =
         innlopStream<AutomatiskReaktiveringEvent>(Topics.innlopReaktivering, builder, objectMapper)
