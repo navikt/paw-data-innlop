@@ -5,4 +5,4 @@ data:
 gcp:
   project: paw-prod-7151
 pdlCluster: prod-fss
-pdlUrl: https://pdl-api.prod-fss-pub.nais.io
+pdlUrl: https://pdl-api.prod-fss-pub.nais.io/graphql
