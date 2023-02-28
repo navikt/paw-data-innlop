@@ -14,7 +14,7 @@ Bruk Kafka Streams og spark det igang i `no/nav/paw/data/innlop/App.kt`
 5. That's it. Etter du har deployet skal data flyte inn i BigQuery i sanntid.
 
 # Diagram
-![image](https://user-images.githubusercontent.com/701351/221824934-da64441e-12a7-4f13-a657-4b5fac2dda5b.png)
+![image](https://user-images.githubusercontent.com/701351/221845434-1610c328-85af-47f2-93f4-e6e23f2b490d.png)
 
 
 # WTF's
