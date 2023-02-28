@@ -54,7 +54,7 @@ fun setupAutomatiskReaktiveringSvar(
             }.build()
         }
         .peek { _, _ ->
-            logger.info("Sending message to topic: ${Topics.utlopReaktiveringSvar}")
+            logger.info("Sender melding til topic: ${Topics.utlopReaktiveringSvar}")
         }
         .to(
             utlopsTopic,
@@ -83,7 +83,7 @@ fun setupAutomatiskReaktivering(
             }.build()
         }
         .peek { _, _ ->
-            logger.info("Sending message to topic: ${Topics.utlopReaktivering}")
+            logger.info("Sender melding til topic: ${Topics.utlopReaktivering}")
         }
         .to(
             utlopsTopic,
