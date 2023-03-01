@@ -2,7 +2,7 @@
 
 Denne appen leser meldinger fra kafka og dytter data videre til BigQuery.
 
-# Diagram
+## Diagram
 ![image](https://user-images.githubusercontent.com/701351/221847343-2fc0ecbf-cd3a-47aa-9f93-4e4153de1d32.png)
 
 ## Hvordan opprette ny tabell / få data inn i BigQuery?
@@ -16,7 +16,7 @@ Legg til i topic-listen her: `.github/workflows/deploy-topics.yaml`. Navnet på 
 Bruk Kafka Streams og spark det igang i `no/nav/paw/data/innlop/App.kt`
 5. That's it. Etter du har deployet skal data flyte inn i BigQuery i sanntid.
 
-# WTF's
+## WTF's
 
-### Jeg ser ikke noe feil i loggene, men finner ikke dataene mine i BigQuery?
+#### Jeg ser ikke noe feil i loggene, men finner ikke dataene mine i BigQuery?
 Du må ha admin-rettigheter for å se dataene. Google cloud console -> hamburger meny -> IAM & Admin -> IAM. Søk opp brukeren din å gi deg selv `BigQuery Admin` rollen.
