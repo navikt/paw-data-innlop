@@ -4,5 +4,7 @@ data:
   topic: data-innlop-v2
 gcp:
   project: paw-dev-129d
-pdlCluster: dev-fss
-pdlUrl: https://pdl-api.dev-fss-pub.nais.io/graphql
+pdl:
+  cluster: dev-fss
+  url: https://pdl-api.dev-fss-pub.nais.io/graphql
+  host: pdl-api.dev-fss-pub.nais.io

@@ -4,5 +4,7 @@ data:
   topic: data-innlop-v1
 gcp:
   project: paw-prod-7151
-pdlCluster: prod-fss
-pdlUrl: https://pdl-api.prod-fss-pub.nais.io/graphql
+pdl:
+  cluster: prod-fss
+  url: https://pdl-api.prod-fss-pub.nais.io/graphql
+  host: pdl-api.prod-fss-pub.nais.io

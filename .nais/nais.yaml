@@ -27,8 +27,12 @@ spec:
     - name: DATA_REAKTIVERING_SVAR_TOPIC
       value: paw.data-innlop-reaktivering-svar-v1
     - name: PDL_CLUSTER
-      value: {{pdlCluster}}
+      value: {{pdl.cluster}}
     - name: PDL_URL
-      value: {{pdlUrl}}
+      value: {{pdl.url}}
+  accessPolicy:
+    outbound:
+      external:
+        - host: {{pdl.host}}
 
 
